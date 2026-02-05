@@ -1,45 +1,86 @@
 SCAM_KEYWORDS = {
+    "english": {
+        "otp": 3,
+        "urgent": 2,
+        "bank": 2,
+        "account blocked": 3,
+        "verify": 1,
+        "upi": 3,
+        "password": 3,
+        "refund": 2,
+        "suspended": 2
+    },
 
-    "otp": 3,
-    "urgent": 2,
-    "account blocked": 3,
-    "bank": 1,
-    "verify": 1,
-    "kyc": 2,
-    "immediately": 2,
-    "click link": 3,
+    "hindi": {
+        "otp": 3,
+        "turant": 2,
+        "bank": 2,
+        "account band": 3,
+        "verify": 1,
+        "upi": 3,
+        "password": 3,
+        "paise wapas": 2,
+        "khata band": 2
+    },
 
-    "turant": 2,
-    "abhi": 1,
-    "khata band": 3,
-    "account band": 3,
-    "bank se bol raha": 2,
-    "otp batao": 3,
-    "link pe click": 3,
-    "adhar": 2,
-    "pan": 2,
-    "verify karo": 2
+    "tamil": {
+        "otp": 3,
+        "udane": 2,
+        "bank": 2,
+        "account mudakkappattullathu": 3,
+        "verify": 1,
+        "upi": 3,
+        "password": 3,
+        "refund": 2
+    },
+
+    "telugu": {
+        "otp": 3,
+        "twaraga": 2,
+        "bank": 2,
+        "account block": 3,
+        "verify": 1,
+        "upi": 3,
+        "password": 3,
+        "refund": 2
+    },
+
+    "malayalam": {
+        "otp": 3,
+        "udane": 2,
+        "bank": 2,
+        "account block": 3,
+        "verify": 1,
+        "upi": 3,
+        "password": 3,
+        "refund": 2
+    }
 }
+
 
 def analyze_text(text: str):
     text = text.lower()
     score = 0
-    hits = []
+    flags = []
+    detected_languages = set()
 
-    for word, weight in SCAM_KEYWORDS.items():
-        if word in text:
-            score += weight
-            hits.append(word)
+    for language, keywords in SCAM_KEYWORDS.items():
+        for word, weight in keywords.items():
+            if word in text:
+                score += weight
+                flags.append(word)
+                detected_languages.add(language)
 
     if score >= 6:
-        level = "HIGH"
+        risk = "HIGH"
     elif score >= 3:
-        level = "MEDIUM"
+        risk = "MEDIUM"
     else:
-        level = "LOW"
+        risk = "LOW"
 
     return {
-        "risk_level": level,
+        "risk_level": risk,
         "score": score,
-        "flags": hits
+        "flags": list(set(flags)),
+        "languages_detected": list(detected_languages)
     }
