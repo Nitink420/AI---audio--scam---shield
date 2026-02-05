@@ -1,0 +1,8 @@
+streamlit
+sounddevice
+numpy
+scipy
+whisper
+torch
+torchvision
+torchaudio
